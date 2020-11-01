@@ -1,9 +1,12 @@
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    gra = gra==1?0:1
+    if (spider.isHittingTile(CollisionDirection.Top) || spider.isHittingTile(CollisionDirection.Bottom)) {
+        gra = gra==1?0:1
+    }
 })
+let spider: Sprite = null
 let gra = 0
 let level = [0, 0]
-let spider = sprites.create(img`
+spider = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . f f f f f f f f f f f f . 
     . . . f 2 2 2 4 4 f f 2 2 4 f . 
@@ -73,18 +76,10 @@ game.onUpdate(function () {
 })
 game.onUpdate(function () {
     scene.centerCameraAt(spider.x, spider.y)
-    spider.vx = 60
+    spider.vx = 120
     if (gra == 0) {
-        if (spider.tileKindAt(TileDirection.Bottom, myTiles.tile1)) {
-            spider.vy = 0
-        } else {
-            spider.vy = 80
-        }
+        spider.vy = 150
     } else {
-        if (spider.tileKindAt(TileDirection.Top, myTiles.tile1)) {
-            spider.vy = 0
-        } else {
-            spider.vy = -80
-        }
+        spider.vy = -150
     }
 })
