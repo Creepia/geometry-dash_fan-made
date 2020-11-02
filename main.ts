@@ -2,7 +2,6 @@ scene.onOverlapTile(SpriteKind.Player, myTiles.tile2, function (sprite, location
     if (controller.A.isPressed()) {
         gra = gra==1?0:1
 tiles.setTileAt(location, myTiles.transparency16)
-        spider.startEffect(effects.ashes, 200)
     }
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -14,10 +13,45 @@ IsOnWall = 1
         })
     }
 })
+function playBgm () {
+    timer.background(function () {
+        music.playTone(440, music.beat(BeatFraction.Quarter))
+        music.rest(music.beat(BeatFraction.Quarter))
+        music.playTone(440, music.beat(BeatFraction.Quarter))
+        music.playTone(415, music.beat(BeatFraction.Quarter))
+        music.playTone(440, music.beat(BeatFraction.Quarter))
+        music.rest(music.beat(BeatFraction.Quarter))
+        music.playTone(440, music.beat(BeatFraction.Quarter))
+        music.playTone(415, music.beat(BeatFraction.Quarter))
+        music.playTone(440, music.beat(BeatFraction.Quarter))
+        music.rest(music.beat(BeatFraction.Quarter))
+        music.playTone(659, music.beat(BeatFraction.Half))
+        music.playTone(494, music.beat(BeatFraction.Whole))
+        music.playTone(494, music.beat(BeatFraction.Quarter))
+        music.rest(music.beat(BeatFraction.Quarter))
+        music.playTone(494, music.beat(BeatFraction.Quarter))
+        music.playTone(440, music.beat(BeatFraction.Quarter))
+        music.playTone(494, music.beat(BeatFraction.Quarter))
+        music.rest(music.beat(BeatFraction.Quarter))
+        music.playTone(554, music.beat(BeatFraction.Quarter))
+        music.rest(music.beat(BeatFraction.Quarter))
+        music.playTone(587, music.beat(BeatFraction.Half))
+        music.playTone(554, music.beat(BeatFraction.Half))
+        music.playTone(440, music.beat(BeatFraction.Whole))
+        playBgm()
+    })
+}
+function Retry () {
+    level[0] = 0
+    info.changeScoreBy(-1)
+    music.baDing.play()
+    pause(500)
+}
+let gra = 0
 let IsOnWall = 0
 let spider: Sprite = null
-let gra = 0
-let level = [0, 0]
+let level: number[] = []
+level = [0, 0]
 spider = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . f f f f f f f f f f f f . 
@@ -36,12 +70,19 @@ spider = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     `, SpriteKind.Player)
-controller.moveSprite(spider)
-gra = 0
-tiles.setTilemap(tilemap`level_0`)
+info.setScore(0)
+playBgm()
+game.onUpdate(function () {
+    if (level[0] == 0) {
+        tiles.setTilemap(tilemap`level_0`)
+        gra = 0
+        spider.setPosition(2, 230)
+        level[0] = level[0] + 1
+    }
+})
 game.onUpdate(function () {
     scene.centerCameraAt(spider.x, spider.y)
-    spider.vx = 120
+    spider.vx = 110
     if (IsOnWall == 0) {
         if (gra == 0) {
             spider.vy = 130
@@ -56,7 +97,7 @@ game.onUpdate(function () {
         }
     }
 })
-game.onUpdate(function () {
+game.onUpdateInterval(100, function () {
     if (gra == 0) {
         spider.setImage(img`
             . . . . . . . . . . . . . . . . 
@@ -96,10 +137,10 @@ game.onUpdate(function () {
             . . . . . . . . . . . . . . . . 
             `)
     }
-})
-game.onUpdate(function () {
-    if (level[0] == 0) {
-        spider.setPosition(0, 77)
-        level[0] = level[0] + 1
+    if (spider.isHittingTile(CollisionDirection.Right) || (spider.y <= 10 || spider.y >= 500) || (tiles.tileAtLocationEquals(tiles.getTileLocation(spider.x / 16, spider.y / 16), myTiles.tile3) || tiles.tileAtLocationEquals(tiles.getTileLocation(spider.x / 16, spider.y / 16), myTiles.tile4))) {
+        Retry()
     }
+})
+game.onUpdateInterval(300, function () {
+    spider.startEffect(effects.fire, 300)
 })
