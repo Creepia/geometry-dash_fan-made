@@ -48,8 +48,8 @@ function playBgm () {
         music.playTone(415, music.beat(BeatFraction.Quarter))
         music.playTone(440, music.beat(BeatFraction.Quarter))
         music.rest(music.beat(BeatFraction.Quarter))
-        music.playTone(349, music.beat(BeatFraction.Half))
-        music.playTone(349, music.beat(BeatFraction.Half))
+        music.playTone(330, music.beat(BeatFraction.Half))
+        music.playTone(330, music.beat(BeatFraction.Half))
         music.playTone(415, music.beat(BeatFraction.Half))
         music.playTone(494, music.beat(BeatFraction.Whole))
         music.playTone(554, music.beat(BeatFraction.Quarter))
@@ -68,10 +68,11 @@ function Retry () {
     music.baDing.play()
     pause(500)
 }
-let gra = 0
 let IsOnWall = 0
 let spider: Sprite = null
 let level: number[] = []
+let gra = 0
+let ani_of_spider = 0
 level = [0, 0]
 spider = sprites.create(img`
     . . . . . . . . . . . . . . . . 
@@ -119,46 +120,89 @@ game.onUpdate(function () {
     }
 })
 game.onUpdateInterval(100, function () {
-    if (gra == 0) {
-        spider.setImage(img`
-            . . . . . . . . . . . . . . . . 
-            . . . f f f f f f f f f f f f . 
-            . . . f 2 2 2 4 4 f f 2 2 4 f . 
-            . . . . f 2 2 4 f 7 7 f 2 f . . 
-            . . . . . f 2 4 f 7 7 f 2 f . . 
-            . . . . f f 2 4 4 f f 2 f . . . 
-            . . f f 2 2 f 4 4 4 2 2 f . . . 
-            . f 4 4 f f 2 4 4 4 2 f . . . . 
-            f 2 4 f 2 2 f 4 4 4 f 2 f f . . 
-            f 2 4 f 2 2 f f f f 2 2 2 4 f . 
-            f 2 f 4 2 2 f f 4 4 f f 2 4 f . 
-            f 2 f 4 2 f . f 4 4 f . f 4 f . 
-            f f 4 4 2 f . f 4 4 f . f 4 f . 
-            . . f f f . . . f f . . . f . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `)
+    ani_of_spider = ani_of_spider==0?1:0
+if (gra == 0) {
+        if (ani_of_spider == 0) {
+            spider.setImage(img`
+                . . . . . . . . . . . . . . . . 
+                . . . f f f f f f f f f f f f . 
+                . . . f 2 2 2 4 4 f f 2 2 4 f . 
+                . . . . f 2 2 4 f 7 7 f 2 f . . 
+                . . . . . f 2 4 f 7 7 f 2 f . . 
+                . . . . f f 2 4 4 f f 2 f . . . 
+                . . f f 2 2 f 4 4 4 2 2 f . . . 
+                . f 4 4 f f 2 4 4 4 2 f . . . . 
+                f 2 4 f 2 2 f 4 4 4 f 2 f f . . 
+                f 2 4 f 2 2 f f f f 2 2 2 4 f . 
+                f 2 f 4 2 2 f f 4 4 f f 2 4 f . 
+                f 2 f 4 2 f . f 4 4 f . f 4 f . 
+                f f 4 4 2 f . f 4 4 f . f 4 f . 
+                . . f f f . . . f f . . . f . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                `)
+        } else {
+            spider.setImage(img`
+                . . . . . . . . . . . . . . . . 
+                . . . f f f f f f f f f f f f . 
+                . . . f 2 2 2 4 4 f f 2 2 4 f . 
+                . . . . f 2 2 4 f 7 7 f 2 f . . 
+                . . . . . f 2 4 f 7 7 f 2 f . . 
+                . . . . f f 2 4 4 f f 2 f . . . 
+                . . f f 2 2 f 4 4 4 2 2 f . . . 
+                . f 2 4 f f 2 4 4 4 2 f . . . . 
+                . f 2 4 2 2 f 4 4 4 f 2 f f . . 
+                . f 4 f 2 2 f f f f 2 2 2 4 f . 
+                f 2 4 f 2 2 f . f 4 2 f 2 4 4 f 
+                f f f f 2 f . . f 4 2 f f 2 4 f 
+                . f f 4 2 f . . f 4 2 f . f f . 
+                . . f f f . . . . f f . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                `)
+        }
     } else {
-        spider.setImage(img`
-            . . . . . . . . . . . . . . . . 
-            . . f f f . . . f f . . . f . . 
-            f f 4 4 2 f . f 4 4 f . f 4 f . 
-            f 2 f 4 2 f . f 4 4 f . f 4 f . 
-            f 2 f 4 2 2 f f 4 4 f f 2 4 f . 
-            2 4 f 2 2 f f f f 2 2 2 4 f . . 
-            f 2 4 f 2 2 f 4 4 4 f 2 f f . . 
-            . f 4 4 f f 2 4 4 4 2 f . . . . 
-            . . f f 2 2 f 4 4 4 2 2 f . . . 
-            . . . . f f 2 4 4 f f 2 f . . . 
-            . . . . . f 2 4 f 7 7 f 2 f . . 
-            . . . . f 2 2 4 f 7 7 f 2 f . . 
-            . . . f 2 2 2 4 4 f f 2 2 4 f . 
-            . . . f f f f f f f f f f f f . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `)
+        if (ani_of_spider == 0) {
+            spider.setImage(img`
+                . . . . . . . . . . . . . . . . 
+                . . f f f . . . f f . . . f . . 
+                f f 4 4 2 f . f 4 4 f . f 4 f . 
+                f 2 f 4 2 f . f 4 4 f . f 4 f . 
+                f 2 f 4 2 2 f f 4 4 f f 2 4 f . 
+                2 4 f 2 2 f f f f 2 2 2 4 f . . 
+                f 2 4 f 2 2 f 4 4 4 f 2 f f . . 
+                . f 4 4 f f 2 4 4 4 2 f . . . . 
+                . . f f 2 2 f 4 4 4 2 2 f . . . 
+                . . . . f f 2 4 4 f f 2 f . . . 
+                . . . . . f 2 4 f 7 7 f 2 f . . 
+                . . . . f 2 2 4 f 7 7 f 2 f . . 
+                . . . f 2 2 2 4 4 f f 2 2 4 f . 
+                . . . f f f f f f f f f f f f . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                `)
+        } else {
+            spider.setImage(img`
+                . . . . . . . . . . . . . . . . 
+                . . . f f . . . . f f . . . . . 
+                . . f 4 2 f . . f 4 4 f . f f . 
+                f f f f 2 f . f f 4 2 f f 2 4 f 
+                f 4 4 f 2 f . f 4 4 2 f 2 4 4 f 
+                2 4 4 f 2 f . f f 2 2 f 4 4 f . 
+                f 2 4 4 f f f 4 4 4 f 2 f f . . 
+                f f 2 4 f f 2 4 4 4 2 f . . . . 
+                . . f f 2 2 f 4 4 4 2 2 f . . . 
+                . . . . f f 2 4 4 f f 2 f . . . 
+                . . . . . f 2 4 f 7 7 f 2 f . . 
+                . . . . f 2 2 4 f 7 7 f 2 f . . 
+                . . . f 2 2 2 4 4 f f 2 2 4 f . 
+                . . . f f f f f f f f f f f f . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                `)
+        }
     }
-    if (spider.isHittingTile(CollisionDirection.Right) || (spider.y <= 10 || spider.y >= 500) || (tiles.tileAtLocationEquals(tiles.getTileLocation(spider.x / 16, spider.y / 16), myTiles.tile3) || tiles.tileAtLocationEquals(tiles.getTileLocation(spider.x / 16, spider.y / 16), myTiles.tile4))) {
+    if (spider.isHittingTile(CollisionDirection.Right) || (spider.y <= 24 || spider.y >= 1000) || (tiles.tileAtLocationEquals(tiles.getTileLocation(spider.x / 16, spider.y / 16), myTiles.tile3) || tiles.tileAtLocationEquals(tiles.getTileLocation(spider.x / 16, spider.y / 16), myTiles.tile4))) {
         Retry()
     }
 })
