@@ -23,12 +23,21 @@ function Tutor () {
     tiles.setTilemap(tilemap`level_4`)
     gra = 0
     spider.setPosition(2, 60)
-    game.splash("Welcome to Geometry Dash")
+    game.splash("Welcome to Geometry Dash", "(Fan made)(arcade ver.)")
     game.splash("Now it is a tutorial level")
     timer.after(1700, function () {
         game.splash("Press Button A ", "to lift the spider")
-        timer.after(1000, function () {
+        timer.after(1500, function () {
             game.splash("Then press Button A ", "to let the spider down")
+            timer.after(1500, function () {
+                game.splash("BE CAREFUL!")
+                timer.after(1500, function () {
+                    game.splash("You can also press", "Button A in the ring")
+                    timer.after(2900, function () {
+                        game.splash("Easy~ Right?", "Let's go~")
+                    })
+                })
+            })
         })
     })
 }
