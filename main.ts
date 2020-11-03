@@ -15,8 +15,22 @@ IsOnWall = 1
 })
 function Pass () {
     level[0] = level[0] + 1
+    game.splash("Congrats~ you got the goal~ ")
     game.splash("You tried " + (0 - info.score()) + " times")
     info.player1.setScore(0)
+}
+function Tutor () {
+    tiles.setTilemap(tilemap`level_4`)
+    gra = 0
+    spider.setPosition(2, 60)
+    game.splash("Welcome to Geometry Dash")
+    game.splash("Now it is a tutorial level")
+    timer.after(1700, function () {
+        game.splash("Press Button A ", "to lift the spider")
+        timer.after(1000, function () {
+            game.splash("Then press Button A ", "to let the spider down")
+        })
+    })
 }
 function playBgm () {
     timer.background(function () {
@@ -74,11 +88,10 @@ function Retry () {
     pause(500)
 }
 let IsOnWall = 0
-let spider: Sprite = null
 let level: number[] = []
+let spider: Sprite = null
 let gra = 0
 let ani_of_spider = 0
-level = [0, 0]
 spider = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . f f f f f f f f f f f f . 
@@ -97,8 +110,10 @@ spider = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     `, SpriteKind.Player)
-info.setScore(0)
+info.setScore(1)
+level = [-1, 0]
 playBgm()
+Tutor()
 game.onUpdate(function () {
     if (level[0] == 0) {
         tiles.setTilemap(tilemap`level_2`)
