@@ -56,11 +56,11 @@ function Tutor () {
         game.splash("Press Button A ", "to lift the spider")
         timer.after(1500, function () {
             game.splash("Then press Button A ", "to let the spider down")
-            timer.after(1500, function () {
+            timer.after(1300, function () {
                 game.splash("BE CAREFUL!")
-                timer.after(1500, function () {
+                timer.after(2100, function () {
                     game.splash("You can also press", "Button A in the ring")
-                    timer.after(2900, function () {
+                    timer.after(1800, function () {
                         game.splash("Easy~ Right?", "Let's go~")
                         level[0] = level[0] + 1
                     })
